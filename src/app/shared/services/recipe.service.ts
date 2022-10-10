@@ -6,6 +6,8 @@ import { ShoppingListService } from './shopping-list.service';
 
 @Injectable()
 export class RecipeService {
+  recipesChanged = new Subject<Recipe[]>();
+
   constructor(private shoppingListService: ShoppingListService) {}
 
   private recipes: Recipe[] = [
@@ -40,7 +42,7 @@ export class RecipeService {
         new Ingredient('brown onion, coarsely chopped', 1),
         new Ingredient('garlic cloves, crushed', 6),
         new Ingredient('fresh thyme sprigs', 4),
-        new Ingredient('tsp ground cinnamon', 1 / 2),
+        new Ingredient('tsp ground cinnamon', 1),
       ]
     ),
   ];
@@ -52,6 +54,21 @@ export class RecipeService {
 
   getRecipeByIndex(index: number) {
     return this.recipes[index];
+  }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
