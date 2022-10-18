@@ -174,4 +174,6 @@ export class AuthService {
 // NOTES:
 /**
  * tap: operator that allows us to perform an action without changing the response
+ * BehaviorSubject: Unlike a normal Subject, it always gives us access to the previous value hence ensuring that we can get access
+ * to the user even if in this part of the application where we need it, we missed the previous user update.
  */
