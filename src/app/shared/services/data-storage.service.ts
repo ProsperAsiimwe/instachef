@@ -1,14 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { exhaustMap, map, take, tap } from 'rxjs/operators';
 import { Recipe } from '../models/recipe.model';
+import { AuthService } from './auth.service';
 import { RecipeService } from './recipe.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataStorageService {
-  constructor(private http: HttpClient, private recipeService: RecipeService) {}
+  constructor(
+    private http: HttpClient,
+    private recipeService: RecipeService,
+    private authService: AuthService
+  ) {}
 
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
@@ -20,6 +25,7 @@ export class DataStorageService {
       )
       .subscribe((response) => {
         console.log(response);
+        // display success message
       });
   }
 
