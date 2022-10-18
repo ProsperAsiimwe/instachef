@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { exhaustMap, map, take, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Recipe } from '../models/recipe.model';
 import { AuthService } from './auth.service';
 import { RecipeService } from './recipe.service';
@@ -18,34 +19,25 @@ export class DataStorageService {
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
 
-    this.http
-      .put(
-        'https://foodie-d1107-default-rtdb.firebaseio.com/recipes.json',
-        recipes
-      )
-      .subscribe((response) => {
-        console.log(response);
-        // display success message
-      });
+    this.http.put(environment.recipes, recipes).subscribe((response) => {
+      console.log(response);
+      // display success message
+    });
   }
 
   fetchRecipes() {
-    return this.http
-      .get<Recipe[]>(
-        'https://foodie-d1107-default-rtdb.firebaseio.com/recipes.json'
-      )
-      .pipe(
-        map((recipes) => {
-          return recipes.map((recipe) => {
-            return {
-              ...recipe,
-              ingredients: recipe.ingredients ? recipe.ingredients : [],
-            };
-          });
-        }),
-        tap((recipes) => {
-          this.recipeService.setRecipes(recipes);
-        })
-      );
+    return this.http.get<Recipe[]>(environment.recipes).pipe(
+      map((recipes) => {
+        return recipes.map((recipe) => {
+          return {
+            ...recipe,
+            ingredients: recipe.ingredients ? recipe.ingredients : [],
+          };
+        });
+      }),
+      tap((recipes) => {
+        this.recipeService.setRecipes(recipes);
+      })
+    );
   }
 }
