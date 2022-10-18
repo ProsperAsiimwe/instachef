@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorHandlerService {
-  constructor() {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
   firebaseAuthErrors(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occured!';

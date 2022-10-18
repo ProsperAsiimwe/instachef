@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -63,5 +63,9 @@ export class AuthComponent implements OnInit {
     );
 
     form.reset();
+  }
+
+  onHandleError() {
+    this.error = null;
   }
 }

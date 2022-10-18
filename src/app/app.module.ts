@@ -18,8 +18,9 @@ import { AppRoutingModule } from 'src/app/shared/routes/app-routing.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { AuthComponent } from './auth/auth.component';
-import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
+import { AlertComponent } from './shared/components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.s
     RecipeEditComponent,
     AuthComponent,
     SpinnerComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
