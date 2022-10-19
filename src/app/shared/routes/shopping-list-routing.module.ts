@@ -4,7 +4,7 @@ import { ShoppingListComponent } from 'src/app/shopping-list/shopping-list.compo
 
 const routes: Routes = [
   {
-    path: 'shopping-list',
+    path: '',
     component: ShoppingListComponent,
   },
 ];

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthComponent } from 'src/app/auth/auth.component';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
   {
@@ -9,14 +8,35 @@ const appRoutes: Routes = [
     // only redirect if the full path is empty
     pathMatch: 'full',
   },
+
+  // Apply lazy loading on your routes to decouple rendering of your components
+  {
+    path: 'recipes',
+    loadChildren: () =>
+      import('src/app/recipes/recipes.module').then(
+        (lazyLoad) => lazyLoad.RecipesModule
+      ),
+  },
   {
     path: 'auth',
-    component: AuthComponent,
+    loadChildren: () =>
+      import('src/app/auth/auth.module').then(
+        (lazyLoad) => lazyLoad.AuthModule
+      ),
+  },
+  {
+    path: 'shopping-list',
+    loadChildren: () =>
+      import('src/app/shopping-list/shopping-list.module').then(
+        (lazyLoad) => lazyLoad.ShoppingListModule
+      ),
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes)],
+  imports: [
+    RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
