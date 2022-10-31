@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { RecipesRoutingModule } from '../shared/routes/recipes-routing.module';
+import { RecipesRoutingModule } from './recipes-routing.module';
 import { SharedModule } from '../shared/shared.module';
 
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';

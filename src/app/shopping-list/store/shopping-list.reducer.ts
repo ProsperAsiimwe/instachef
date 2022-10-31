@@ -7,10 +7,6 @@ export interface State {
   editedIngredientIndex: number;
 }
 
-export interface AppState {
-  myShoppingList: State;
-}
-
 const resetIngredientData = {
   editedIngredient: null,
   editedIngredientIndex: -1,

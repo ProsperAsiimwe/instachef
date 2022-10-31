@@ -5,9 +5,9 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Recipe } from '../models/recipe.model';
-import { DataStorageService } from '../services/data-storage.service';
-import { RecipeService } from '../services/recipe.service';
+import { Recipe } from '../shared/models/recipe.model';
+import { DataStorageService } from '../shared/services/data-storage.service';
+import { RecipeService } from './recipe.service';
 
 @Injectable({
   providedIn: 'root',

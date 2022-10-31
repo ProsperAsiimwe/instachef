@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { AuthInterceptorService } from './shared/interceptors/auth-interceptor.service';
-import { RecipeService } from './shared/services/recipe.service';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { RecipeService } from './recipes/recipe.service';
 
 @NgModule({
   providers: [
