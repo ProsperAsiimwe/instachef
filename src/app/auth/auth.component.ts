@@ -1,22 +1,31 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthResponseData, AuthService } from './auth.service';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from './store/auth.actions';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
+  private storeSub: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.storeSub = this.store.select('auth').subscribe((authState) => {
+      this.isLoading = authState.loading;
+
+      this.error = authState.authError;
+      this.isLoading = false;
+    });
+  }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -33,12 +42,10 @@ export class AuthComponent implements OnInit {
     const phone = form.value.phone;
     const user = form.value.username;
 
-    let authObs: Observable<AuthResponseData>;
-
-    this.isLoading = true;
-
     if (this.isLoginMode) {
-      authObs = this.authService.signIn(email, password);
+      this.store.dispatch(
+        new AuthActions.LoginStart({ email: email, password: password })
+      );
     } else {
       if (password !== retypePassword) {
         this.error = 'Passwords did not match';
@@ -47,25 +54,27 @@ export class AuthComponent implements OnInit {
 
         return;
       } else {
-        authObs = this.authService.signUp(email, password, user, phone);
+        this.store.dispatch(
+          new AuthActions.SignupStart({
+            email: email,
+            password: password,
+            username: user,
+            phone: phone,
+          })
+        );
       }
     }
-
-    authObs.subscribe(
-      (response) => {
-        this.isLoading = false;
-        this.router.navigate(['/recipes']);
-      },
-      (errorMessage) => {
-        this.error = errorMessage;
-        this.isLoading = false;
-      }
-    );
 
     form.reset();
   }
 
   onHandleError() {
-    this.error = null;
+    this.store.dispatch(new AuthActions.ClearError());
+  }
+
+  ngOnDestroy(): void {
+    if (this.storeSub) {
+      this.storeSub.unsubscribe();
+    }
   }
 }
