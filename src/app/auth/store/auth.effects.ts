@@ -6,7 +6,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   handleAuthenticationError,
   handleAuthenticationSuccess,
-} from 'src/app/shared/helpers/authentication.helper';
+} from 'src/app/auth/helpers/authentication.helper';
 import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth.service';
@@ -99,8 +99,10 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   authRedirect = this.actions$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
-    tap(() => {
-      this.router.navigate(['/']);
+    tap((authSuccessAction: AuthActions.AuthenticateSuccess) => {
+      if (authSuccessAction.payload.redirect) {
+        this.router.navigate(['/']);
+      }
     })
   );
 
@@ -139,6 +141,7 @@ export class AuthEffects {
           userId: loadedUser.id,
           token: loadedUser.token,
           expirationDate: new Date(userData._tokenExpirationDate),
+          redirect: false,
         });
       } else {
         return { type: 'DUMMY' };

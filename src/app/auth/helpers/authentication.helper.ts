@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
-import * as AuthActions from '../../auth/store/auth.actions';
-import { User } from '../models/user.model';
+import * as AuthActions from '../store/auth.actions';
+import { User } from '../../shared/models/user.model';
 
 export const handleAuthenticationSuccess = (
   expiresIn: number,
@@ -19,6 +19,7 @@ export const handleAuthenticationSuccess = (
     userId: userId,
     token: token,
     expirationDate: expirationDate,
+    redirect: true,
   });
 };
 
